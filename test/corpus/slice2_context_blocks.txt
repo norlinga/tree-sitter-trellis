@@ -1,0 +1,334 @@
+==================
+Provides: single path-handle entry, no description
+==================
+
+Feature: Solo
+  "One thing."
+
+  Provides:
+    - Solo
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier)))))))
+
+==================
+Provides: path handle with description
+==================
+
+Feature: Sigs
+  "Method signatures captured as description."
+
+  Provides:
+    - Subscription.create(user, plan_id) -> Subscription | raises PaymentError
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier)
+            (identifier)))
+        description: (entry_description)))))
+
+==================
+Provides: prefixed handle (Event)
+==================
+
+Feature: Emit
+  "Emits an event."
+
+  Provides:
+    - Event: subscription.created
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (handle_entry
+        handle: (prefixed_handle
+          prefix: (identifier)
+          path: (identifier_path
+            (identifier)
+            (identifier)))))))
+
+==================
+Provides: prefixed handle (Trait)
+==================
+
+Feature: Trait
+  "Provides a trait."
+
+  Provides:
+    - Trait: Authenticatable
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (handle_entry
+        handle: (prefixed_handle
+          prefix: (identifier)
+          path: (identifier_path
+            (identifier)))))))
+
+==================
+Provides: multiple entries (mixed handle shapes)
+==================
+
+Feature: Mixed
+  "A mix of handle shapes."
+
+  Provides:
+    - Subscription.create(user, plan_id) -> Subscription
+    - Event: subscription.created
+    - Trait: Refundable
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier)
+            (identifier)))
+        description: (entry_description))
+      (handle_entry
+        handle: (prefixed_handle
+          prefix: (identifier)
+          path: (identifier_path
+            (identifier)
+            (identifier))))
+      (handle_entry
+        handle: (prefixed_handle
+          prefix: (identifier)
+          path: (identifier_path
+            (identifier)))))))
+
+==================
+Consumes: duck-typed entry with parenthetical description
+==================
+
+Feature: Duck
+  "Duck-typed dependency."
+
+  Consumes:
+    - UserRecord (must respond to: id, email, payment_token)
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (consumes_block
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier)))
+        description: (entry_description)))))
+
+==================
+Invariants: prose entries
+==================
+
+Feature: Inv
+  "Invariants are prose."
+
+  Invariants:
+    - A user MUST NOT have two active 'pro' subscriptions
+    - Charges SHALL be idempotent on (user_id, plan_id, idempotency_key)
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (invariants_block
+      (prose_entry
+        text: (prose_text))
+      (prose_entry
+        text: (prose_text)))))
+
+==================
+OutOfScope: prose entries
+==================
+
+Feature: OOS
+  "Out of scope items."
+
+  OutOfScope:
+    - Refunds (handled by RefundService)
+    - Plan upgrades (handled by ChangeSubscriptionPlan)
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (out_of_scope_block
+      (prose_entry
+        text: (prose_text))
+      (prose_entry
+        text: (prose_text)))))
+
+==================
+All four context blocks (full whitepaper example)
+==================
+
+@owner: BillingTeam
+@stability: stable
+
+Feature: Create Subscription
+  "Handles the idempotent creation of a user subscription and initial billing."
+
+  Provides:
+    - Subscription.create(user, plan_id) -> Subscription | raises PaymentError
+    - Event: subscription.created
+
+  Consumes:
+    - PaymentGateway.charge(token, amount) -> ChargeResult
+    - UserRecord (must respond to: id, email, payment_token)
+
+  Invariants:
+    - A user MUST NOT have two active 'pro' subscriptions
+    - Charges SHALL be idempotent on (user_id, plan_id, idempotency_key)
+
+  OutOfScope:
+    - Refunds (handled by RefundService)
+    - Plan upgrades (handled by ChangeSubscriptionPlan)
+
+---
+
+(source_file
+  frontmatter: (frontmatter
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (identifier))
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (identifier)))
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier)
+            (identifier)))
+        description: (entry_description))
+      (handle_entry
+        handle: (prefixed_handle
+          prefix: (identifier)
+          path: (identifier_path
+            (identifier)
+            (identifier)))))
+    (consumes_block
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier)
+            (identifier)))
+        description: (entry_description))
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier)))
+        description: (entry_description)))
+    (invariants_block
+      (prose_entry
+        text: (prose_text))
+      (prose_entry
+        text: (prose_text)))
+    (out_of_scope_block
+      (prose_entry
+        text: (prose_text))
+      (prose_entry
+        text: (prose_text)))))
+
+==================
+Multi-segment identifier path (3 segments)
+==================
+
+Feature: Deep
+  "Deeply qualified handles."
+
+  Provides:
+    - Foo.Bar.Baz.do_thing(args)
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier)
+            (identifier)
+            (identifier)
+            (identifier)))
+        description: (entry_description)))))
+
+==================
+Blank lines between entries within a block (permissive)
+==================
+
+Feature: Spaced
+  "Blank lines between entries are tolerated."
+
+  Provides:
+    - Alpha
+
+    - Beta
+
+
+    - Gamma
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier))))
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier))))
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier)))))))

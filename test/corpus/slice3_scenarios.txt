@@ -1,0 +1,256 @@
+==================
+Single scenario, single step
+==================
+
+Feature: Solo
+  "One scenario."
+
+  Scenario (happy-path): It works
+    Given a user
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (scenario_block
+      kind: (scenario_kind)
+      name: (scenario_name)
+      (step
+        keyword: (step_keyword)
+        text: (step_text)))))
+
+==================
+Scenario with all five step keywords
+==================
+
+Feature: AllKw
+  "All step keywords exercised."
+
+  Scenario (happy-path): All keywords
+    Given a precondition
+    When an action occurs
+    Then a result is observed
+    And another result follows
+    But not this other thing
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (scenario_block
+      kind: (scenario_kind)
+      name: (scenario_name)
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text)))))
+
+==================
+Scenario without kind
+==================
+
+Feature: NoKind
+  "Kind is optional at parse time."
+
+  Scenario: An unkinded scenario
+    Given something
+    When it changes
+    Then something else
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (scenario_block
+      name: (scenario_name)
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text)))))
+
+==================
+Multiple scenarios in one feature
+==================
+
+Feature: Multi
+  "Multiple scenarios."
+
+  Scenario (happy-path): The success case
+    Given a thing
+    Then it works
+
+  Scenario (negative): The failure case
+    Given a broken thing
+    When it is used
+    Then it MUST fail
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (scenario_block
+      kind: (scenario_kind)
+      name: (scenario_name)
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text)))
+    (scenario_block
+      kind: (scenario_kind)
+      name: (scenario_name)
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text)))))
+
+==================
+Hyphenated kind value
+==================
+
+Feature: Hyphen
+  "Kebab-case kind."
+
+  Scenario (happy-path-extended): Long kind name
+    Given a thing
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (scenario_block
+      kind: (scenario_kind)
+      name: (scenario_name)
+      (step keyword: (step_keyword) text: (step_text)))))
+
+==================
+Step text containing keyword-like prose words
+==================
+
+Feature: WordBoundary
+  "Whenever, Andrews, Buttery should not be parsed as step keywords."
+
+  Scenario (edge): Words that look like keywords
+    Given Whenever the user clicks
+    When Andrews submits the form
+    Then Buttery results follow
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (scenario_block
+      kind: (scenario_kind)
+      name: (scenario_name)
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text)))))
+
+==================
+Permissive blank lines between steps
+==================
+
+Feature: Spaced
+  "Blank lines between steps are tolerated."
+
+  Scenario (happy-path): Has blank lines
+    Given a thing
+
+    When it changes
+
+
+    Then a result
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (scenario_block
+      kind: (scenario_kind)
+      name: (scenario_name)
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text)))))
+
+==================
+Feature with both context blocks and scenarios
+==================
+
+@owner: BillingTeam
+@stability: stable
+
+Feature: Create Subscription
+  "Handles the idempotent creation of a user subscription and initial billing."
+
+  Provides:
+    - Subscription.create(user, plan_id) -> Subscription | raises PaymentError
+    - Event: subscription.created
+
+  Consumes:
+    - PaymentGateway.charge(token, amount) -> ChargeResult
+
+  Invariants:
+    - A user MUST NOT have two active pro subscriptions
+
+  OutOfScope:
+    - Refunds (handled by RefundService)
+
+  Scenario (happy-path): Successful checkout
+    Given a User with a valid stripe_token
+    When the create method is called with plan_id
+    Then a Subscription record is created
+    And the PaymentGateway receives a charge request
+
+  Scenario (negative): Expired card
+    Given a User with an expired card
+    When the create method is called
+    Then it MUST raise PaymentError
+
+---
+
+(source_file
+  frontmatter: (frontmatter
+    (frontmatter_entry key: (frontmatter_key) value: (identifier))
+    (frontmatter_entry key: (frontmatter_key) value: (identifier)))
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (handle_entry
+        handle: (path_handle (identifier_path (identifier) (identifier)))
+        description: (entry_description))
+      (handle_entry
+        handle: (prefixed_handle
+          prefix: (identifier)
+          path: (identifier_path (identifier) (identifier)))))
+    (consumes_block
+      (handle_entry
+        handle: (path_handle (identifier_path (identifier) (identifier)))
+        description: (entry_description)))
+    (invariants_block
+      (prose_entry text: (prose_text)))
+    (out_of_scope_block
+      (prose_entry text: (prose_text)))
+    (scenario_block
+      kind: (scenario_kind)
+      name: (scenario_name)
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text)))
+    (scenario_block
+      kind: (scenario_kind)
+      name: (scenario_name)
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text)))))

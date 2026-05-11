@@ -1,0 +1,10 @@
+node_modules/
+build/
+*.wasm
+*.log
+*.dSYM/
+
+# Go build artifacts
+*.test
+*.out
+/bindings/go/tree-sitter-trellis

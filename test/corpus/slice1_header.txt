@@ -1,0 +1,192 @@
+==================
+Bare Feature, summary on next line
+==================
+
+Feature: Create Subscription
+  "Handles the idempotent creation of a user subscription and initial billing."
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)))
+
+==================
+Bare Feature, summary on same line
+==================
+
+Feature: Ping "Health-check endpoint."
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)))
+
+==================
+Feature with full frontmatter
+==================
+
+@owner: BillingTeam
+@stability: stable
+@composition: [Authenticatable, Payable]
+@since: 2025-11-04
+@reviewed: 2026-03-15
+
+Feature: Create Subscription
+  "Handles the idempotent creation of a user subscription and initial billing."
+
+---
+
+(source_file
+  frontmatter: (frontmatter
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (identifier))
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (identifier))
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (list
+        (identifier)
+        (identifier)))
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (iso_date))
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (iso_date)))
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)))
+
+==================
+Frontmatter value: empty list
+==================
+
+@composition: []
+
+Feature: Empty "An empty unit."
+
+---
+
+(source_file
+  frontmatter: (frontmatter
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (list)))
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)))
+
+==================
+Frontmatter value: list with trailing comma
+==================
+
+@composition: [Alpha, Beta,]
+
+Feature: Trailing "Trailing comma is parse-clean; lint warns."
+
+---
+
+(source_file
+  frontmatter: (frontmatter
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (list
+        (identifier)
+        (identifier))))
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)))
+
+==================
+Frontmatter value: quoted string (override-style)
+==================
+
+@allow-many-scenarios: "this is a state machine with N legitimate states"
+
+Feature: StateMachine "Models a finite state machine."
+
+---
+
+(source_file
+  frontmatter: (frontmatter
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (quoted_string)))
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)))
+
+==================
+Frontmatter value: single-element list
+==================
+
+@composition: [Authenticatable]
+
+Feature: One "Solitary trait."
+
+---
+
+(source_file
+  frontmatter: (frontmatter
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (list
+        (identifier))))
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)))
+
+==================
+Hyphenated identifier value
+==================
+
+@stability: experimental-preview
+
+Feature: Hyphen "Hyphens permitted in identifier values."
+
+---
+
+(source_file
+  frontmatter: (frontmatter
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (identifier)))
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)))
+
+==================
+Permissive whitespace between frontmatter entries
+==================
+
+@owner: BillingTeam
+
+@stability: stable
+
+
+@since: 2025-11-04
+
+Feature: Spaced "Blank lines between entries are tolerated."
+
+---
+
+(source_file
+  frontmatter: (frontmatter
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (identifier))
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (identifier))
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (iso_date)))
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)))

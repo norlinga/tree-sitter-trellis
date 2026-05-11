@@ -1,0 +1,27 @@
+{
+  "name": "tree-sitter-trellis",
+  "version": "0.0.1",
+  "description": "Tree-sitter grammar for the Trellis sidecar specification format",
+  "main": "bindings/node",
+  "keywords": ["parser", "incremental", "tree-sitter", "trellis"],
+  "author": "Aaron Norling",
+  "license": "MIT",
+  "files": [
+    "grammar.js",
+    "binding.gyp",
+    "bindings/**",
+    "queries/**",
+    "src/**",
+    "tree-sitter.json"
+  ],
+  "devDependencies": {
+    "tree-sitter-cli": "^0.26.0"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.trellis",
+      "file-types": ["trellis"],
+      "highlights": "queries/highlights.scm"
+    }
+  ]
+}

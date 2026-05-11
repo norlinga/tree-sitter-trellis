@@ -1,0 +1,507 @@
+[
+  {
+    "type": "consumes_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "handle_entry",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "entry_description",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "feature",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "feature_name",
+            "named": true
+          }
+        ]
+      },
+      "summary": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "quoted_string",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "consumes_block",
+          "named": true
+        },
+        {
+          "type": "invariants_block",
+          "named": true
+        },
+        {
+          "type": "out_of_scope_block",
+          "named": true
+        },
+        {
+          "type": "provides_block",
+          "named": true
+        },
+        {
+          "type": "scenario_block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "frontmatter",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "frontmatter_entry",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "frontmatter_entry",
+    "named": true,
+    "fields": {
+      "key": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "frontmatter_key",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "iso_date",
+            "named": true
+          },
+          {
+            "type": "list",
+            "named": true
+          },
+          {
+            "type": "quoted_string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "handle_entry",
+    "named": true,
+    "fields": {
+      "description": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "entry_description",
+            "named": true
+          }
+        ]
+      },
+      "handle": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "path_handle",
+            "named": true
+          },
+          {
+            "type": "prefixed_handle",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "identifier_path",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "invariants_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "prose_entry",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "out_of_scope_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "prose_entry",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "path_handle",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier_path",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "prefixed_handle",
+    "named": true,
+    "fields": {
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier_path",
+            "named": true
+          }
+        ]
+      },
+      "prefix": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "prose_entry",
+    "named": true,
+    "fields": {
+      "text": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "prose_text",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "prose_text",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "provides_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "handle_entry",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "scenario_block",
+    "named": true,
+    "fields": {
+      "kind": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "scenario_kind",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "scenario_name",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "step",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "scenario_name",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "source_file",
+    "named": true,
+    "root": true,
+    "fields": {
+      "feature": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "feature",
+            "named": true
+          }
+        ]
+      },
+      "frontmatter": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "frontmatter",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "step",
+    "named": true,
+    "fields": {
+      "keyword": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "step_keyword",
+            "named": true
+          }
+        ]
+      },
+      "text": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "step_text",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "step_keyword",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "step_text",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "\n",
+    "named": false
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": ".",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": "And",
+    "named": false
+  },
+  {
+    "type": "But",
+    "named": false
+  },
+  {
+    "type": "Consumes:",
+    "named": false
+  },
+  {
+    "type": "Feature:",
+    "named": false
+  },
+  {
+    "type": "Given",
+    "named": false
+  },
+  {
+    "type": "Invariants:",
+    "named": false
+  },
+  {
+    "type": "OutOfScope:",
+    "named": false
+  },
+  {
+    "type": "Provides:",
+    "named": false
+  },
+  {
+    "type": "Scenario",
+    "named": false
+  },
+  {
+    "type": "Then",
+    "named": false
+  },
+  {
+    "type": "When",
+    "named": false
+  },
+  {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "]",
+    "named": false
+  },
+  {
+    "type": "comment",
+    "named": true,
+    "extra": true
+  },
+  {
+    "type": "feature_name",
+    "named": true
+  },
+  {
+    "type": "frontmatter_key",
+    "named": true
+  },
+  {
+    "type": "identifier",
+    "named": true
+  },
+  {
+    "type": "iso_date",
+    "named": true
+  },
+  {
+    "type": "quoted_string",
+    "named": true
+  },
+  {
+    "type": "scenario_kind",
+    "named": true
+  }
+]

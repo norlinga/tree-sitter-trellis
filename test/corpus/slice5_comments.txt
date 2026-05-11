@@ -1,0 +1,223 @@
+==================
+Top-of-file comment
+==================
+
+# This file documents the FooService unit.
+Feature: Foo
+  "Does foo things."
+
+---
+
+(source_file
+  (comment)
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)))
+
+==================
+Comment between frontmatter entries
+==================
+
+@owner: BillingTeam
+# This unit is owned by Billing but consumed by Identity.
+@stability: stable
+
+Feature: Foo
+  "Foo."
+
+---
+
+(source_file
+  frontmatter: (frontmatter
+    (frontmatter_entry key: (frontmatter_key) value: (identifier))
+    (comment)
+    (frontmatter_entry key: (frontmatter_key) value: (identifier)))
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)))
+
+==================
+Comment between summary and first context block
+==================
+
+Feature: Foo
+  "Foo."
+
+  # The Provides block documents what this unit exposes.
+  Provides:
+    - Foo.bar
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (comment)
+    (provides_block
+      (handle_entry
+        handle: (path_handle (identifier_path (identifier) (identifier)))))))
+
+==================
+Comment inside a context block
+==================
+
+Feature: Foo
+  "Foo."
+
+  Provides:
+    # Public API surface
+    - Foo.create(args)
+    # Emitted on success
+    - Event: foo.created
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (comment)
+      (handle_entry
+        handle: (path_handle (identifier_path (identifier) (identifier)))
+        description: (entry_description))
+      (comment)
+      (handle_entry
+        handle: (prefixed_handle
+          prefix: (identifier)
+          path: (identifier_path (identifier) (identifier)))))))
+
+==================
+Comment between scenarios and inside a scenario
+==================
+
+Feature: Foo
+  "Foo."
+
+  # The success path
+  Scenario (happy-path): It works
+    # Setup
+    Given a user
+    # Action
+    When the user does something
+    # Assertion
+    Then it works
+
+  # The failure path
+  Scenario (negative): It fails
+    Given a broken user
+    Then it MUST fail
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (comment)
+    (scenario_block
+      kind: (scenario_kind)
+      name: (scenario_name)
+      (comment)
+      (step keyword: (step_keyword) text: (step_text))
+      (comment)
+      (step keyword: (step_keyword) text: (step_text))
+      (comment)
+      (step keyword: (step_keyword) text: (step_text))
+      (comment))
+    (scenario_block
+      kind: (scenario_kind)
+      name: (scenario_name)
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text)))))
+
+==================
+Mid-line hash stays as prose (not a comment)
+==================
+
+Feature: Foo
+  "Foo."
+
+  Scenario: Mid-line hash
+    Given the user with id #42 clicks
+    Then issue #1234 is closed
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (scenario_block
+      name: (scenario_name)
+      (step keyword: (step_keyword) text: (step_text))
+      (step keyword: (step_keyword) text: (step_text)))))
+
+==================
+Empty comment line (just a hash)
+==================
+
+Feature: Foo
+  "Foo."
+
+  #
+  Provides:
+    - Foo.bar
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (comment)
+    (provides_block
+      (handle_entry
+        handle: (path_handle (identifier_path (identifier) (identifier)))))))
+
+==================
+Multi-line comment as multiple hash lines
+==================
+
+Feature: Foo
+  "Foo."
+
+  # First line of explanation.
+  # Second line of explanation.
+  # Third line of explanation.
+  Provides:
+    - Foo.bar
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (comment)
+    (comment)
+    (comment)
+    (provides_block
+      (handle_entry
+        handle: (path_handle (identifier_path (identifier) (identifier)))))))
+
+==================
+Comment with hash inside a quoted frontmatter string stays as part of string
+==================
+
+@allow-many-scenarios: "see issue #1234 for context"
+
+Feature: Foo
+  "Foo."
+
+---
+
+(source_file
+  frontmatter: (frontmatter
+    (frontmatter_entry
+      key: (frontmatter_key)
+      value: (quoted_string)))
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)))
