@@ -1,0 +1,44 @@
+{
+  "name": "trellis-syntax",
+  "displayName": "Trellis Syntax",
+  "description": "Syntax highlighting for Trellis sidecar specification files.",
+  "version": "0.0.1",
+  "publisher": "norlinga",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/norlinga/tree-sitter-trellis"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "trellis",
+        "aliases": [
+          "Trellis",
+          "trellis"
+        ],
+        "extensions": [
+          ".trellis"
+        ],
+        "icon": {
+          "light": "./icons/trellis-light.svg",
+          "dark": "./icons/trellis-dark.svg"
+        },
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "trellis",
+        "scopeName": "source.trellis",
+        "path": "./syntaxes/trellis.tmLanguage.json"
+      }
+    ]
+  }
+}
