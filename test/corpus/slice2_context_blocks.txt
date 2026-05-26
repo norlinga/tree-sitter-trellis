@@ -45,6 +45,85 @@ Feature: Sigs
         description: (entry_description)))))
 
 ==================
+Provides: path handle with source anchor and description
+==================
+
+Feature: Anchored
+  "A provided handle can name an implementation anchor."
+
+  Provides:
+    - Billing.Proration.calculate @source("symbol:CalculateProration") -> Money
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier)
+            (identifier)
+            (identifier)))
+        source_anchor: (source_anchor
+          value: (quoted_string))
+        description: (entry_description)))))
+
+==================
+Provides: source anchor without description (bare)
+==================
+
+Feature: Anchored
+  "Bare anchor, no description."
+
+  Provides:
+    - Billing.Proration.calculate @source("symbol:CalculateProration")
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier)
+            (identifier)
+            (identifier)))
+        source_anchor: (source_anchor
+          value: (quoted_string))))))
+
+==================
+Provides: prefixed handle with source anchor
+==================
+
+Feature: Emit
+  "Anchored event handle."
+
+  Provides:
+    - Event: subscription.created @source("symbol:SubscriptionCreated")
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (provides_block
+      (handle_entry
+        handle: (prefixed_handle
+          prefix: (identifier)
+          path: (identifier_path
+            (identifier)
+            (identifier)))
+        source_anchor: (source_anchor
+          value: (quoted_string))))))
+
+==================
 Provides: prefixed handle (Event)
 ==================
 
@@ -149,6 +228,32 @@ Feature: Duck
         handle: (path_handle
           (identifier_path
             (identifier)))
+        description: (entry_description)))))
+
+==================
+Consumes: source anchor with line locator and description
+==================
+
+Feature: Dep
+  "Anchored consumed dependency."
+
+  Consumes:
+    - PaymentGateway.charge @source("line:42-68") -> ChargeResult
+
+---
+
+(source_file
+  feature: (feature
+    name: (feature_name)
+    summary: (quoted_string)
+    (consumes_block
+      (handle_entry
+        handle: (path_handle
+          (identifier_path
+            (identifier)
+            (identifier)))
+        source_anchor: (source_anchor
+          value: (quoted_string))
         description: (entry_description)))))
 
 ==================

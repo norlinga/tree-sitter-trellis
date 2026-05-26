@@ -156,6 +156,7 @@ module.exports = grammar({
     handle_entry: $ => seq(
       '-',
       field('handle', $._handle),
+      field('source_anchor', optional($.source_anchor)),
       field('description', optional($.entry_description)),
     ),
 
@@ -177,6 +178,25 @@ module.exports = grammar({
     identifier_path: $ => seq(
       $.identifier,
       repeat(seq('.', $.identifier)),
+    ),
+
+    // Optional implementation locator for a provided/consumed contract.
+    // This is deliberately separate from the handle token: the handle remains
+    // graph identity, while source_anchor is opaque location metadata for
+    // tooling such as `trellis locate`.
+    //
+    // Examples:
+    //   - Billing.Proration.calculate @source("symbol:Calculate")
+    //   - Legacy.Batch.close @source("line:42-68") -> Result
+    //
+    // The quoted payload is generic so different language ecosystems can
+    // choose anchors without expanding the handle grammar. It is interpreted
+    // by Trellis core, not by tree-sitter.
+    source_anchor: $ => seq(
+      '@source',
+      '(',
+      field('value', $.quoted_string),
+      ')',
     ),
 
     // Everything after the handle, to end of line. Captured verbatim;

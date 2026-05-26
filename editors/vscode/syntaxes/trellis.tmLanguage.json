@@ -2,126 +2,152 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Trellis",
   "scopeName": "source.trellis",
+  "fileTypes": ["trellis"],
   "patterns": [
-    {
-      "include": "#comments"
-    },
-    {
-      "include": "#frontmatter"
-    },
-    {
-      "include": "#scenario"
-    },
-    {
-      "include": "#steps"
-    },
-    {
-      "include": "#block-keywords"
-    },
-    {
-      "include": "#strings"
-    },
-    {
-      "include": "#dates"
-    },
-    {
-      "include": "#handles"
-    },
-    {
-      "include": "#punctuation"
-    }
+    { "include": "#comment" },
+    { "include": "#frontmatter" },
+    { "include": "#feature-header" },
+    { "include": "#feature-summary" },
+    { "include": "#handle-block" },
+    { "include": "#prose-block" },
+    { "include": "#scenario-header" },
+    { "include": "#step" }
   ],
   "repository": {
-    "block-keywords": {
-      "patterns": [
-        {
-          "name": "keyword.control.trellis",
-          "match": "^\\s*(Feature|Provides|Consumes|Invariants|OutOfScope):"
-        }
-      ]
+    "comment": {
+      "match": "^\\s*#.*$",
+      "name": "comment.line.number-sign.trellis"
     },
-    "comments": {
-      "patterns": [
-        {
-          "name": "comment.line.number-sign.trellis",
-          "match": "^\\s*#.*$"
-        }
-      ]
-    },
-    "dates": {
-      "patterns": [
-        {
-          "name": "constant.numeric.date.trellis",
-          "match": "\\b\\d{4}-\\d{2}-\\d{2}\\b"
-        }
-      ]
-    },
+
     "frontmatter": {
+      "match": "^(@[A-Za-z][A-Za-z0-9_-]*)(:)\\s*(.*)$",
+      "captures": {
+        "1": { "name": "entity.name.tag.frontmatter.trellis" },
+        "2": { "name": "punctuation.separator.key-value.trellis" },
+        "3": { "patterns": [{ "include": "#frontmatter-value" }] }
+      }
+    },
+    "frontmatter-value": {
       "patterns": [
+        { "match": "\"[^\"\\n]*\"", "name": "string.quoted.double.trellis" },
+        { "match": "\\b\\d{4}-\\d{2}-\\d{2}\\b", "name": "constant.numeric.date.trellis" },
         {
-          "name": "meta.frontmatter.trellis",
-          "match": "^\\s*(@[A-Za-z][A-Za-z0-9_-]*)(\\s*:)",
-          "captures": {
-            "1": {
-              "name": "entity.other.attribute-name.trellis"
-            },
-            "2": {
-              "name": "punctuation.separator.key-value.trellis"
-            }
-          }
-        }
+          "begin": "\\[",
+          "end": "\\]",
+          "beginCaptures": { "0": { "name": "punctuation.section.brackets.begin.trellis" } },
+          "endCaptures": { "0": { "name": "punctuation.section.brackets.end.trellis" } },
+          "patterns": [
+            { "match": "[A-Za-z][A-Za-z0-9_]*", "name": "entity.name.type.trellis" },
+            { "match": ",", "name": "punctuation.separator.trellis" }
+          ]
+        },
+        { "match": "[A-Za-z][A-Za-z0-9_-]*", "name": "constant.language.trellis" }
       ]
     },
-    "handles": {
+
+    "feature-header": {
+      "match": "^(Feature)(:)\\s*(.+)$",
+      "captures": {
+        "1": { "name": "keyword.declaration.feature.trellis" },
+        "2": { "name": "punctuation.separator.trellis" },
+        "3": { "name": "entity.name.section.feature.trellis" }
+      }
+    },
+    "feature-summary": {
+      "match": "^\\s+(\"[^\"\\n]*\")\\s*$",
+      "captures": { "1": { "name": "string.quoted.double.trellis" } }
+    },
+
+    "handle-block": {
+      "begin": "^\\s+(Provides|Consumes)(:)\\s*$",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.block.trellis" },
+        "2": { "name": "punctuation.separator.trellis" }
+      },
+      "end": "^(?!\\s*-\\s)(?=\\s*\\S)",
+      "patterns": [{ "include": "#handle-entry" }]
+    },
+    "prose-block": {
+      "begin": "^\\s+(Invariants|OutOfScope)(:)\\s*$",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.block.trellis" },
+        "2": { "name": "punctuation.separator.trellis" }
+      },
+      "end": "^(?!\\s*-\\s)(?=\\s*\\S)",
+      "patterns": [{ "include": "#prose-entry" }]
+    },
+
+    "handle-entry": {
+      "begin": "^\\s*(-)\\s+(?:([A-Za-z][A-Za-z0-9_-]*)(:)\\s*)?((?:[A-Za-z_][A-Za-z0-9_]*)(?:\\.[A-Za-z_][A-Za-z0-9_]*)*)?",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.list.trellis" },
+        "2": { "name": "support.class.handle-prefix.trellis" },
+        "3": { "name": "punctuation.separator.handle.trellis" },
+        "4": { "name": "entity.name.function.handle-path.trellis" }
+      },
+      "end": "$",
       "patterns": [
-        {
-          "name": "variable.other.handle.trellis",
-          "match": "\\b[A-Za-z][A-Za-z0-9_-]*(?:\\.[A-Za-z][A-Za-z0-9_-]*)*\\b"
-        }
+        { "include": "#source-anchor" },
+        { "include": "#return-arrow" },
+        { "include": "#rfc2119" },
+        { "include": "#single-quoted-literal" }
       ]
     },
-    "punctuation": {
+    "prose-entry": {
+      "begin": "^\\s*(-)\\s+",
+      "beginCaptures": { "1": { "name": "punctuation.definition.list.trellis" } },
+      "end": "$",
       "patterns": [
-        {
-          "name": "punctuation.delimiter.trellis",
-          "match": "[:,.()\\[\\]-]"
-        }
+        { "include": "#rfc2119" },
+        { "include": "#single-quoted-literal" }
       ]
     },
-    "scenario": {
-      "patterns": [
-        {
-          "name": "meta.scenario.trellis",
-          "match": "^\\s*(Scenario)(?:\\(([^)]+)\\))?(\\s*:)",
-          "captures": {
-            "1": {
-              "name": "keyword.control.trellis"
-            },
-            "2": {
-              "name": "entity.name.type.scenario-kind.trellis"
-            },
-            "3": {
-              "name": "punctuation.separator.key-value.trellis"
-            }
-          }
-        }
-      ]
+
+    "source-anchor": {
+      "match": "(@source)(\\()(\"[^\"]*\")(\\))",
+      "captures": {
+        "1": { "name": "keyword.other.source-anchor.trellis" },
+        "2": { "name": "punctuation.section.parens.begin.trellis" },
+        "3": { "name": "string.quoted.double.trellis" },
+        "4": { "name": "punctuation.section.parens.end.trellis" }
+      }
     },
-    "steps": {
-      "patterns": [
-        {
-          "name": "keyword.control.step.trellis",
-          "match": "^\\s*(Given|When|Then|And|But)\\b"
-        }
-      ]
+    "return-arrow": {
+      "match": "->",
+      "name": "keyword.operator.return.trellis"
     },
-    "strings": {
-      "patterns": [
-        {
-          "name": "string.quoted.double.trellis",
-          "match": "\"[^\"\\n]*\""
+
+    "scenario-header": {
+      "match": "^\\s+(Scenario)(?:\\s*(\\()([a-z][a-z0-9-]*)(\\)))?(:)\\s*(.+)$",
+      "captures": {
+        "1": { "name": "keyword.declaration.scenario.trellis" },
+        "2": { "name": "punctuation.section.parens.begin.trellis" },
+        "3": { "name": "entity.name.type.scenario-kind.trellis" },
+        "4": { "name": "punctuation.section.parens.end.trellis" },
+        "5": { "name": "punctuation.separator.trellis" },
+        "6": { "name": "entity.name.section.scenario.trellis" }
+      }
+    },
+
+    "step": {
+      "match": "^\\s+(Given|When|Then|And|But)\\b(.*)$",
+      "captures": {
+        "1": { "name": "keyword.control.step.trellis" },
+        "2": {
+          "patterns": [
+            { "include": "#rfc2119" },
+            { "include": "#single-quoted-literal" }
+          ]
         }
-      ]
+      }
+    },
+    "rfc2119": {
+      "match": "\\b(MUST NOT|SHALL NOT|MUST|SHALL|SHOULD|MAY)\\b",
+      "name": "keyword.other.rfc2119.trellis"
+    },
+    "single-quoted-literal": {
+      "match": "'[^'\\n]*'",
+      "name": "string.quoted.single.trellis"
     }
   }
 }

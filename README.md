@@ -16,7 +16,7 @@ repository (`spec/format.md` is the authoring guide).
 
 ## Status
 
-v0.1 — grammar slices 1, 2, 3, and 5 shipped; all **37 corpus tests pass**.
+v0.1 — grammar slices 1, 2, 3, and 5 shipped; all **41 corpus tests pass**.
 
 Slice 4 (sub-tokenization of step text — splitting `Given a User with a
 'valid' stripe_token` into typed sub-nodes) is intentionally deferred to the
@@ -135,7 +135,7 @@ Requires:
 git clone https://github.com/norlinga/tree-sitter-trellis.git
 cd tree-sitter-trellis
 tree-sitter generate          # regenerate src/parser.c from grammar.js
-tree-sitter test              # 37/37 corpus fixtures should pass
+tree-sitter test              # 41/41 corpus fixtures should pass
 go test ./...                 # exercises the Go bindings
 ```
 
@@ -181,6 +181,43 @@ authoring conventions, override mechanism) lives in the main
 
 ---
 
+## Source anchors (`@source`)
+
+A `Provides:` or `Consumes:` entry may carry an optional `@source("…")`
+annotation between its handle and its description:
+
+```trellis
+Provides:
+  - Billing.Proration.calculate @source("symbol:CalculateProration") -> Money
+  - Event: subscription.created @source("symbol:SubscriptionCreated")
+
+Consumes:
+  - PaymentGateway.charge @source("line:42-68") -> ChargeResult
+```
+
+The annotation is permitted **wherever a handle appears** — both block kinds,
+both handle shapes (`path` and `prefixed`), with or without a trailing
+description. Handles only exist in `Provides:` and `Consumes:` entries, so that
+is the full extent of where `@source` is valid; `Invariants:` and `OutOfScope:`
+are prose and take no anchor.
+
+This uniform availability is a **consistency and simplicity** decision, not a
+semantic one. The anchor hangs off the shared entry rule, so the same syntax
+works everywhere a handle does rather than being special-cased per block.
+
+The grammar assigns the annotation **no meaning**. `source_anchor` is parsed as
+an opaque double-quoted payload (`symbol:…`, `line:…`, or anything else a
+language ecosystem chooses); tree-sitter never interprets it. The handle remains
+the sole graph identity — `@source` is purely adjacent location metadata.
+
+Consequently, **whether anything acts on these annotations is up to the
+consumer.** Trellis core, the linter, the LSP, and any AI agent tooling may or
+may not read them; this grammar only guarantees they parse into a stable node.
+Authoring `@source` is therefore safe and lossless even against tools that
+ignore it entirely.
+
+---
+
 ## Contributing
 
 The grammar and its corpus tests evolve together. Two rules:
@@ -188,7 +225,7 @@ The grammar and its corpus tests evolve together. Two rules:
 1. **Bug-reproducer first.** If a real-world `.trellis` file from any
    consuming repo surfaces a parser bug, add a minimal reproducer to
    `test/corpus/` *before* fixing it. The fixture is the regression test.
-2. **`tree-sitter test` must pass before any commit.** All 37 corpus
+2. **`tree-sitter test` must pass before any commit.** All 41 corpus
    fixtures (or however many exist when you read this) green — no
    exceptions for "I'm just iterating."
 

@@ -151,6 +151,16 @@
             "named": true
           }
         ]
+      },
+      "source_anchor": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "source_anchor",
+            "named": true
+          }
+        ]
       }
     }
   },
@@ -333,6 +343,22 @@
     "fields": {}
   },
   {
+    "type": "source_anchor",
+    "named": true,
+    "fields": {
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "quoted_string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "source_file",
     "named": true,
     "root": true,
@@ -421,6 +447,10 @@
   },
   {
     "type": ":",
+    "named": false
+  },
+  {
+    "type": "@source",
     "named": false
   },
   {
