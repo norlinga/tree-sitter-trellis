@@ -12,6 +12,6 @@ vsce package
 Install the generated `.vsix` with:
 
 ```sh
-code --install-extension trellis-syntax-0.0.1.vsix
-cursor --install-extension trellis-syntax-0.0.1.vsix
+code --install-extension trellis-syntax-0.1.1.vsix
+cursor --install-extension trellis-syntax-0.1.1.vsix
 ```
